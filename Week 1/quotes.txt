@@ -1,0 +1,29 @@
+Qoutes to be written within 24 hours:
+
+Time requested: 2025-09-02 17:54:20.999464
+Customer Name: Joseph Bowen
+By Phone/By Text (True/True): 720-401-4721
+Email (True): pandjbowen@hotmail.com
+Home address (None): 11767 Idalia Street, Commerce City, CO 80022
+Tire Size Requested - 285-75-R16
+
+Qoutes to be written within 24 hours:
+
+Time requested: 2025-09-02 17:58:56.804506
+Customer Name: Josh
+By Phone/By Text (True/False): 333-123-4567
+Email (True): josh@here.now
+Home address (False): 123 Herring
+Tire Size Requested - 185-50-R14
+
+Qoutes to be written within 24 hours:
+
+Time requested: 2025-09-02 18:07:19.381063
+Customer Name: asdf
+By Phone/By Text (False/None): None
+Email (True): asdfa
+Home address (False): asdf
+Tire Size Requested - 205-25-R14
+
+Qoutes to be written within 24 hours:
+
