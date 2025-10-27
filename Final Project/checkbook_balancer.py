@@ -1,18 +1,29 @@
-"""This program will allow a user to keep a budget and to keep a check register."""
+"""This program will allow a user to keep a budget and to keep a check register.
+Eventually, the program will allow users to save and load their files.  It will 
+also allow them to add new accounts to the check register.  Finally, It will 
+eventually scan a bank statement and help the user balance their account.  The 
+final three functions were not able to be completed in the time that was available
+for this project. """
 
-#import tools
+#Import tools needed for the program
 
 import tkinter as tk
 from tkinter import Frame, Label, Button, ttk, messagebox
 from datetime import datetime
 from dateutil import parser
 
+#Create global libraries to store the information for the budget and bank accounts
+
 data = {}
 account_data = {}
 
 
 def get_safe_date(user_input):
-    """Return valid formatted date, or raise ValueError if invalid."""
+    """This function will allow the user to input the date in many formats and will 
+    Return a valid formatted date, or raise ValueError if the entry is invalid.
+    Arguments: user_input
+    Returns: formatted date or error message"""
+
     user_input = user_input.strip()
     if not user_input:
         return datetime.now().strftime("%Y-%m-%d")  # default today
@@ -22,16 +33,14 @@ def get_safe_date(user_input):
     except (ValueError, OverflowError) as e:
         messagebox.showerror("Invalid Date", str(e))
         
-    
-def submit():
-    try:
-        date_str = get_safe_date(date_entry.get())
-        
-    except ValueError as e:
-        messagebox.showerror("Invalid Date", str(e))
-
-
 def validate_float(input):      
+    """This function will take input from the user and ensure that it is a valid
+    floating point number.  If the input is not a floating point number or cannot
+    be converted to one, the function will display a message and end returning 
+    "None" which will cause the issuing function to stop running.
+    Arguments: input -user input
+    Return: floating point number or "None" 
+    """
     try:
         amount = float(input)
         return amount
@@ -42,13 +51,19 @@ def validate_float(input):
         
 
 def refresh_table(tree, data):
-    """Clear the Treeview and redraw all rows from data."""
+    """This function will clear the Treeview and redraw all rows from the updated data.
+    Arguments:  tree-the treeview object created by another function
+                data-the dictionary associated with the request
+    Return:     The function does not return anything, but updates the treeview object. """
     for row in tree.get_children():
         tree.delete(row)
 
     total_income = 0
     total_expense = 0
-
+    
+    #Separates the budget function from the Register function as their treeview objects are different. 
+    #This is necessary to allow the refresh_tables function to be used by both functions. 
+    #Budget Function code
     if any(entry_type == "income" for(transaction_id, (validated_date, item, entry_type, amount, trans_num)) in data.items()):
 
         for i, (transaction_id, (validated_date, item, entry_type, amount, trans_num )) in enumerate(data.items()):
@@ -73,7 +88,8 @@ def refresh_table(tree, data):
         tree.tag_configure("netpositive", foreground="green", font=("Helvetica", 18, "bold"))
         tree.tag_configure("netnegative", foreground="red", font=("Helvetica", 18, "bold"))
         tree.insert("", "end", values=("", "Net Total:", f"${net_total:,.2f}", "", ""), tags=(net_tag,))
-        
+
+    #Register Function code    
     else: 
         total=0
         for i, (transaction_id, (validated_date, item, entry_type, amount, trans_num )) in enumerate(data.items()):
@@ -89,12 +105,21 @@ def refresh_table(tree, data):
     tree.update_idletasks()
 
 def on_tree_click(event, tree, data, refresh_table):
-    """Handle clicks in the Treeview — delete if ❌ clicked."""
+    """This function handle when the user clicks in the Treeview object.  The function will delete
+     the associated row  if the ❌ in the delete column is clicked.
+     Arguments:     event: the event that is detected when a user clicks the treeview object.  
+                    tree: the treeview object that was clicked on
+                    data: the dictionary associated with the treeview object that was clicked on
+                    refresh_table: the refresh_table() function so the treeview object can be redrawn
+    Returns:        This function does not return a value.  It deletes the associated information from the 
+                    dictionary and redraws the table."""
+    
     region = tree.identify("region", event.x, event.y)
     if region != "cell":
         return     
     column = tree.identify_column(event.x)
 
+    #Selects the appropriate column depending on the treeview object clicked
     if any(entry_type == "income" for(transaction_id, (validated_date, item, entry_type, amount, trans_num)) in data.items()):
         if column != "#5":  # the 5th column is "Delete" in the Budget table
             return
@@ -125,10 +150,7 @@ def main():
     root=tk.Tk()
     root.geometry("2800x1000")
     root.title("BookKeeper")
-
-    for i in range (1,51):
-        data[i]=["Sample_Date", "Sample Item", "income", 50, ""]   
-
+  
     frm_main=Frame(root, bg="lightblue", padx=6, pady=6)
     frm_main.pack(padx=6, pady=6, fill=tk.BOTH, expand=True)
     budget_tree=setup_budget_app(root)
@@ -139,6 +161,7 @@ def main():
     root.mainloop()
     
 def setup_budget_app(root):    
+    """This function will set up the tkinter frame and the treeview object for the Budget app"""
     def add_entry():
         """This function will collect data from the Tkinter Input boxes for Budget Item and Amount.  
         It will then send the input to the validate_float() function to ensure it is the proper data 
@@ -162,24 +185,17 @@ def setup_budget_app(root):
         if entry_type == "expense" and amount > 0: 
             amount=-amount
 
-        # transaction_id = max(data.keys(), default=0)+1
         data[transaction_id]=[item, "", entry_type, amount, ""]
-
         budget_tree.refresh_table()
-
         amount_entry.delete(0, tk.END)
         item_entry.delete(0, tk.END)
+
     #Setup budget frame to take information about budget items
     budget=tk.Frame(root, borderwidth=2, relief="groove", padx=10, pady=10, width=1000, height=1000)   
     budget.pack_propagate(False)
     budget.pack(side="left", padx=10, pady=10, fill="both")
-    
-    
-    
     title_label= tk.Label(budget, text="Budget App", font=("Helvetica", 20, "bold"))
     title_label.pack(anchor="center", pady=(0,10))
-
-
                     
     #Use Tkinter to create a label for the Budget Item input box.  Create the box and put both in the frame. 
     tk.Label(budget, text="Budget Item").pack()
@@ -201,7 +217,6 @@ def setup_budget_app(root):
 
     #Create submit button to save an entry to the dictionary. 
     tk.Button(budget, text="Enter Budget Item", command=add_entry).pack(pady=6)
-
     tree_frame=Frame(budget)
     tree_frame.pack(fill="both", expand=True, padx=5, pady=5)
 
@@ -241,9 +256,7 @@ def setup_budget_app(root):
     budget_tree.tag_configure("total", background="#d0d0ff", font=("Helvetica", 20, "bold"))
     budget_tree.tag_configure("expense", foreground="red")
     style.layout("Treeview", [("Treeview.treearea", {"sticky": "nswe"})])
-
     budget_tree.pack(fill="both", expand=True, padx=6, pady=6)
-    # scrollbar.config(command=on_scroll)
     refresh_table(budget_tree, data)
 
     #Create scroll bar and Populate table
@@ -251,13 +264,15 @@ def setup_budget_app(root):
     scrollbar.pack(side="right", fill="y")
     budget_tree.configure(yscrollcommand=scrollbar.set)
     budget_tree.bind("<Button-1>", lambda e: on_tree_click(e, budget_tree, data, refresh_table))
-
     budget_tree.data=data
     budget_tree.refresh_table=lambda:refresh_table(budget_tree,data)
-
     return budget_tree
 
 def setup_register_app(root):
+    """This function will set up the frame for the Register app.  It will also set up the Treeview object
+    that holds the table.  The add_entry function is significantly different from the one in the Budget 
+    app; so, it is not combined."""
+    
     def add_entry():
       """This function will collect data from the user using Tkinter Input boxes.  It will validate 
       floats with the validate_float function.  It will assign the data to either the 'Debit' or 
@@ -275,20 +290,15 @@ def setup_register_app(root):
       if amount is None: 
           return
       
-
       item= item_entry.get() or "Unknown"
       entry_type = type_var.get() or "credit"
       if entry_type == "credit" and amount > 0:
           amount=-amount
           
-      # transaction_id = max(data.keys(), default=0)+1
       account_data[transaction_id]=[validated_date, item, entry_type, amount, trans_num]
-
       register_tree.refresh_table()
-
       amount_entry.delete(0, tk.END)
       item_entry.delete(0, tk.END)
-
 
     #Setup budget frame to take information about budget items
     account=tk.Frame(root, borderwidth=2, relief="groove", padx=10, pady=10)   
@@ -330,7 +340,6 @@ def setup_register_app(root):
 
     #Create submit button to save an entry to the dictionary. 
     tk.Button(account, text="Enter Item", command=add_entry).pack(pady=6)
-
     tree_frame = Frame(account)
     tree_frame.pack(fill="both", expand=True, padx=6, pady=6)
 
@@ -383,7 +392,6 @@ def setup_register_app(root):
     scrollbar.pack(side="right", fill="y")
     register_tree.configure(yscrollcommand=scrollbar.set)
     register_tree.bind("<Button-1>", lambda e: on_tree_click(e, register_tree, account_data, refresh_table))
-
     register_tree.data=account_data
     register_tree.refresh_table=lambda:refresh_table(register_tree,account_data)
 

@@ -1,0 +1,71 @@
+Student Project Report
+
+Do the following:
+
+1. In the table below, list the dates, amount of time spent, and
+description of the work that you did on your project. Follow the example
+that is in the first row of the table below. Include the time you spent
+doing any of the following:
+    a. discussing your project with your teacher, tutor, or fellow students
+    b. researching by reading articles and watching applicable videos
+    c. designing your project by drawing diagrams and other applicable documents
+    d. writing experimental code
+    d. writing code for your project
+    e. writing test functions
+    f. debugging your code
+    g. any other activity that helped you complete your project
+
+=============Example====================
+            Time Spent
+   Date       (hours)   Description of Work
+----------  ----------  -------------------------
+2025-10-08      4.0     Researched Tkinter nested frames. Wrote the start of
+                        the program including the main frame and the frame
+                        for the Budgeting tool.  Wrote most of the code for
+                        the budgeting tool in all wrote 3 functions so far. 
+
+2025-10-09      3.0     Continued working with the Budgeting application.  
+                        I added a function to delete mistaken items from the 
+                        table.  I split the amount column into income and 
+                        expense columns.  I added total rows at the bottom 
+                        of the table.  I also styled the table by making 
+                        income items green and expense items red.  
+
+2025-10-10      5.75    Finished working with the Budget application.  I 
+                        added a scroll bar.  I modified the delete function. 
+                        I tied the individual buttons to the transaction id 
+                        so that the buttons would scroll with the scroll bar
+                        to ensure that the correct item is deleted. I changed 
+                        the format of the total rows to show green when 
+                        positive and red when negative.  I moved the Budget
+                        application into a frame and manually sized it to 
+                        take up half of the root window.  I placed the frame 
+                        in the root window.  
+
+2025-10-11      7.0     I moved several functions from inside my setup_budget_app
+                        function to outside it so that they can be reused in my
+                        setup_register_app function.  I modified the functions 
+                        so that they can be used by both applications.  I fixed
+                        a bug with the scroll bar.  I completed the 
+                        setup_check_register function.  Next week, I will have 
+                        to work on the test functions. 
+2025-10-13      7.0     Worked on test functions for the validate_float and  
+                        refresh_table functions.  Added a date column to the 
+                        Register table.  Fixed the refresh_table function so
+                        that it worked correctly with both the Register and 
+                        Budget functions.
+2025-10-14      4.0     Finished the test functions by adding a test function 
+                        for the validate_date() function.  updated the refresh_table_
+                        table function tests to account for changes made by adding 
+                        the date column.  Fixed the on_tree_click() function so it 
+                        would work correctly with both the Budget and Register 
+                        functions.  Researched and made it so the test_checkbook_
+                        balancer program will complete without the user having to 
+                        click on the warning boxes.   
+=============Example====================
+
+
+
+2. In Canvas, submit this completed text file, your Python program, your
+Python test file, and any project data files such as .txt and .csv files and
+link to video walkthrough if needed.
